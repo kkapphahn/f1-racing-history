@@ -55,10 +55,13 @@ app.http('genie-start', {
 
             const data = await response.json();
             
+            // Log for debugging
+            context.log('Conversation started:', JSON.stringify(data));
+            
             return {
                 status: 200,
                 jsonBody: {
-                    conversationId: data.conversation_id || data.id,
+                    conversationId: data.conversation_id || data.id || data.conversationId,
                     message: 'Conversation started successfully'
                 }
             };
@@ -143,12 +146,29 @@ app.http('genie-message', {
 
             const data = await response.json();
             
+            // Log the full response for debugging
+            context.log('Databricks response:', JSON.stringify(data));
+            
             // Extract response, query, and results from Genie's response
+            // The actual structure may vary, so we check multiple possible locations
             const aiResponse = {
-                response: data.content || data.message || 'Response received',
-                query: data.query || data.sql || null,
-                results: data.result || data.results || data.data || null,
-                attachments: data.attachments || null
+                response: data.content || 
+                         data.message || 
+                         data.text ||
+                         (data.attachments && data.attachments[0]?.text?.content) ||
+                         'Response received',
+                query: data.query || 
+                      data.sql || 
+                      data.query_text ||
+                      (data.attachments && data.attachments.find(a => a.query)?.query?.query) ||
+                      null,
+                results: data.result || 
+                        data.results || 
+                        data.data ||
+                        (data.attachments && data.attachments.find(a => a.query)?.query?.result?.data_typed_array) ||
+                        null,
+                attachments: data.attachments || null,
+                rawData: data // Include raw data for debugging
             };
 
             return {

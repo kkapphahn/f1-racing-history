@@ -300,7 +300,16 @@ async function sendMessage(messageText) {
         }
 
         const data = await response.json();
-        renderAIMessage(data.response, data.results, data.query);
+        
+        // Log full response for debugging
+        console.log('Genie API Response:', data);
+        
+        // Check if we have rawData for debugging
+        if (data.rawData) {
+            console.log('Raw Databricks Response:', data.rawData);
+        }
+        
+        renderAIMessage(data.response, data.results, data.query, data.rawData);
 
     } catch (error) {
         console.error('Error sending message:', error);
@@ -329,7 +338,7 @@ function renderUserMessage(text) {
 /**
  * Render AI message bubble with optional data
  */
-function renderAIMessage(responseText, results, query) {
+function renderAIMessage(responseText, results, query, rawData) {
     const messagesContainer = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message message-ai';
@@ -338,6 +347,23 @@ function renderAIMessage(responseText, results, query) {
     const textP = document.createElement('p');
     textP.textContent = responseText;
     messageDiv.appendChild(textP);
+    
+    // Add debug info in development
+    if (rawData && window.location.hostname === 'localhost') {
+        const debugDetails = document.createElement('details');
+        debugDetails.className = 'debug-info';
+        debugDetails.style.fontSize = '0.8em';
+        debugDetails.style.marginTop = '0.5rem';
+        const debugSummary = document.createElement('summary');
+        debugSummary.textContent = '🔍 Debug: View Raw API Response';
+        debugDetails.appendChild(debugSummary);
+        
+        const debugPre = document.createElement('pre');
+        debugPre.textContent = JSON.stringify(rawData, null, 2);
+        debugPre.style.fontSize = '0.75em';
+        debugDetails.appendChild(debugPre);
+        messageDiv.appendChild(debugDetails);
+    }
 
     // Add SQL query if available (collapsed by default)
     if (query) {
