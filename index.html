@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 Racing History - The Evolution of Speed</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -18,6 +19,7 @@
                 <li><a href="#legends">Legends</a></li>
                 <li><a href="#teams">Teams</a></li>
                 <li><a href="#circuits">Circuits</a></li>
+                <li><a href="#chat">Chat</a></li>
             </ul>
         </nav>
     </header>
@@ -214,6 +216,51 @@
                 <p class="circuit-location">Belgium</p>
                 <p>Legendary for Eau Rouge and unpredictable weather - a true driver's circuit.</p>
             </div>
+        </div>
+    </section>
+
+    <section id="chat" class="chat-section">
+        <h2 class="section-title">Ask About F1 Data</h2>
+        <p class="chat-description">Use natural language to explore F1 historical data powered by Databricks Genie</p>
+        
+        <div class="sample-questions">
+            <button class="sample-question" data-question="Who won the most championships?">
+                Who won the most championships?
+            </button>
+            <button class="sample-question" data-question="Show all races at Monaco">
+                Show all races at Monaco
+            </button>
+            <button class="sample-question" data-question="Compare Ferrari vs McLaren wins">
+                Compare Ferrari vs McLaren wins
+            </button>
+            <button class="sample-question" data-question="Which circuits have fastest lap times?">
+                Which circuits have fastest lap times?
+            </button>
+            <button class="sample-question" data-question="Show 1980s champions">
+                Show 1980s champions
+            </button>
+            <button class="sample-question" data-question="Constructor standings by year">
+                Constructor standings by year
+            </button>
+            <button class="sample-question" data-question="Fastest pit stop times">
+                Fastest pit stop times
+            </button>
+            <button class="sample-question" data-question="Show podium finishes for Senna">
+                Show podium finishes for Senna
+            </button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <div class="chat-input-area">
+            <textarea 
+                id="chatInput" 
+                placeholder="Ask a question about F1 history..."
+                rows="3"
+            ></textarea>
+            <button id="sendBtn">Send</button>
         </div>
     </section>
 
